@@ -4,15 +4,15 @@
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageId>ChoETL.NETStandard</PackageId>
-		<Authors>CinChoo</Authors>
-		<Company>CinChoo Inc.</Company>
+		<Authors>Cinchoo</Authors>
+		<Company>Cinchoo Inc.</Company>
 		<Product>ChoETL.NETStandard</Product>
 		<Description>ETL Framework for .NET</Description>
-		<Copyright>Copyright CinChoo Inc.</Copyright>
+		<Copyright>Copyright Cinchoo Inc.</Copyright>
 		<PackageIconUrl>http://www.gravatar.com/avatar/6ebc114acdd1d9f7ec5028a165a819b1.png</PackageIconUrl>
-		<PackageProjectUrl>https://github.com/CinChoo/ChoETL</PackageProjectUrl>
-		<PackageLicenseUrl>https://github.com/CinChoo/ChoETL/blob/master/LICENSE</PackageLicenseUrl>
-		<RepositoryUrl>https://github.com/CinChoo/ChoETL</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/Cinchoo/ChoETL</PackageProjectUrl>
+		<PackageLicenseUrl>https://github.com/Cinchoo/ChoETL/blob/master/LICENSE</PackageLicenseUrl>
+		<RepositoryUrl>https://github.com/Cinchoo/ChoETL</RepositoryUrl>
 		<RepositoryType>GitHub</RepositoryType>
 		<PackageTags>ETL c# .NET CSV Xml JSON Flat</PackageTags>
 		<PackageReleaseNotes>.NET Standard version</PackageReleaseNotes>
@@ -22,7 +22,7 @@
 		<RootNamespace>ChoETL</RootNamespace>
 		<SignAssembly>true</SignAssembly>
 		<AssemblyOriginatorKeyFile>ChoETL.NETStandard.snk</AssemblyOriginatorKeyFile>
-		<PackageIcon>cinChoo.png</PackageIcon>
+		<PackageIcon>cinchoo.png</PackageIcon>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
 
@@ -323,7 +323,7 @@
 		<Compile Include="..\ChoETL\IChoNotifyRecordRead.cs" Link="IChoNotifyRecordRead.cs" />
 	</ItemGroup>
 	<ItemGroup>
-		<None Include="..\Assets\Icons\cinChoo.png">
+		<None Include="..\Assets\Icons\cinchoo.png">
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
 		</None>

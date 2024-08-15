@@ -6,23 +6,23 @@
     <RootNamespace>ChoETL.JSON</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Description>JSON extension to CinChoo ETL framework</Description>
-    <Copyright>Copyright CinChoo Inc.</Copyright>
-    <PackageLicenseUrl>https://github.com/CinChoo/ChoETL/blob/master/LICENSE</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/CinChoo/ChoETL</PackageProjectUrl>
+    <Description>JSON extension to Cinchoo ETL framework</Description>
+    <Copyright>Copyright Cinchoo Inc.</Copyright>
+    <PackageLicenseUrl>https://github.com/Cinchoo/ChoETL/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/Cinchoo/ChoETL</PackageProjectUrl>
     <PackageIconUrl></PackageIconUrl>
-    <RepositoryUrl>https://github.com/CinChoo/ChoETL</RepositoryUrl>
+    <RepositoryUrl>https://github.com/Cinchoo/ChoETL</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
     <PackageTags>ETL c# .NET CSV Xml JSON Flat</PackageTags>
     <PackageReleaseNotes>.NET Standard version</PackageReleaseNotes>
     <PackageId>ChoETL.JSON.NETStandard</PackageId>
-    <Authors>CinChoo</Authors>
-    <Company>CinChoo Inc.</Company>
+    <Authors>Cinchoo</Authors>
+    <Company>Cinchoo Inc.</Company>
     <Product>ChoETL.JSON.NETStandard</Product>
     <Version>1.2.1.66</Version>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>ChoETL.JSON.NETStandard.snk</AssemblyOriginatorKeyFile>
-    <PackageIcon>cinChoo.png</PackageIcon>
+    <PackageIcon>cinchoo.png</PackageIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -70,7 +70,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <None Include="..\Assets\Icons\cinChoo.png">
+    <None Include="..\Assets\Icons\cinchoo.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
