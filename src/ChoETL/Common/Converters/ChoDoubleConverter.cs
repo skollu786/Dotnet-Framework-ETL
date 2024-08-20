@@ -5,14 +5,14 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
-#if !NETSTANDARD2_0
+#if !NET7_0_OR_GREATER
 using System.Windows.Data;
 #endif
 
 namespace ChoETL
 {
     [ChoTypeConverter(typeof(Double))]
-#if !NETSTANDARD2_0
+#if !NET7_0_OR_GREATER
     public class ChoDoubleConverter : IValueConverter
 #else
     public class ChoDoubleConverter : IChoValueConverter

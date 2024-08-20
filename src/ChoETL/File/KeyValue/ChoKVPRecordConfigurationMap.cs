@@ -125,7 +125,7 @@ namespace ChoETL
             return this;
         }
 
-#if !NETSTANDARD2_0
+#if !NET7_0_OR_GREATER
         public ChoKVPRecordFieldConfigurationMap PropertyConverter(System.Windows.Data.IValueConverter converter)
         {
             if (_config.PropConvertersInternal.IsNullOrEmpty())
