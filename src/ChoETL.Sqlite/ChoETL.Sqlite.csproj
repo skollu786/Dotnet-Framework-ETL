@@ -11,6 +11,7 @@
     <AssemblyVersion>1.0.0.5</AssemblyVersion>
     <FileVersion>1.0.0.5</FileVersion>
 	  <LangVersion>Latest</LangVersion>
+	  <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="8.0.8" />
@@ -19,4 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ChoETL\ChoETL.csproj" />
   </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\SourceGenerator\SourceGenerator.csproj" OutputItemType="Analyzer"/>
+	</ItemGroup>
 </Project>

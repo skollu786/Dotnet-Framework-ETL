@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace ChoETL
 {
-    public static class Refactorcs
+    static partial class Refactorcs
     {
-        public static void Create(this SqliteConnection sqlliteConnection, string filePath) {  }
+        static partial void Create(string filePath);
     }
 }
