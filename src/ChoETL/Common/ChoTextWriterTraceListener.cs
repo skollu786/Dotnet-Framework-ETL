@@ -542,7 +542,7 @@ namespace ChoETL
                     else
                         errMsg = ioEx.ToString();
 
-#if !NETSTANDARD2_0
+#if !NET7_0_OR_GREATER
                     ChoETLFramework.WriteToEventLog(errMsg, EventLogEntryType.Error);
 #endif
                     //Environment.Exit(-100);
@@ -562,7 +562,7 @@ namespace ChoETL
                         else
                             errMsg = ex.ToString();
 
-#if !NETSTANDARD2_0
+#if !NET7_0_OR_GREATER
                     ChoETLFramework.WriteToEventLog(errMsg, EventLogEntryType.Error);
 #endif
                     }

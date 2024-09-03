@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ChoETL
 {
-    public unsafe class ChoObjectPool<T>
+    public class ChoObjectPool<T>
         where T : new()
     {
         private int _pointer = 0;

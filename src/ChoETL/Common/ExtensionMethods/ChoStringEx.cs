@@ -1837,7 +1837,7 @@ namespace ChoETL
 
         public static string ToMaskedSqlConnectionString(this string connectionString)
         {
-            System.Data.SqlClient.SqlConnectionStringBuilder sb = new System.Data.SqlClient.SqlConnectionStringBuilder(connectionString);
+            SqlConnectionStringBuilder sb = new SqlConnectionStringBuilder(connectionString);
             sb.Password = "XXXXX";
             return sb.ToString();
 

@@ -1,27 +1,19 @@
-﻿using System;
+﻿using ChoETL;
+using Microsoft.Data.Sqlite;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.SQLite;
-using ChoETL;
-using System.IO;
-using System.Dynamic;
-using System.Data;
-using System.Data.Entity;
-using System.Data.Entity.ModelConfiguration.Conventions;
 using System.ComponentModel;
+using System.Data;
+using System.IO;
+using System.Linq;
 using System.Reflection;
-using System.Configuration;
-using System.Data.SQLite.EF6;
-using System.Data.Entity.Core.Common;
-using System.Diagnostics;
+using System.Text;
 
 namespace ChoETL
 {
-    public static class ChoETLSQLite
+    public static class ChoETLSqlite
     {
-        public static IQueryable<T> StageOnSQLite<T>(this IEnumerable<T> items, ChoETLSqliteSettings sqliteSettings = null)
+        public static IQueryable<T> StageOnSqlite<T>(this IEnumerable<T> items, ChoETLSqliteSettings sqliteSettings = null)
             where T : class
         {
             Dictionary<string, PropertyInfo> PIDict = null;
@@ -43,7 +35,7 @@ namespace ChoETL
                 return Enumerable.Empty<T>().AsQueryable();
         }
 
-        public static IEnumerable<T> StageOnSQLite<T>(this IEnumerable<T> items, string conditions, ChoETLSqliteSettings sqliteSettings = null)
+        public static IEnumerable<T> StageOnSqlite<T>(this IEnumerable<T> items, string conditions, ChoETLSqliteSettings sqliteSettings = null)
         {
             sqliteSettings = ValidateSettings<dynamic>(sqliteSettings);
             LoadDataToDb(items, sqliteSettings, null);
@@ -52,9 +44,9 @@ namespace ChoETL
             if (!conditions.IsNullOrWhiteSpace())
                 sql += " {0}".FormatString(conditions);
 
-            SQLiteConnection conn = new SQLiteConnection(sqliteSettings.GetConnectionString());
+            SqliteConnection conn = new SqliteConnection(sqliteSettings.GetConnectionString());
             conn.Open();
-            SQLiteCommand command2 = new SQLiteCommand(sql, conn);
+            SqliteCommand command2 = new SqliteCommand(sql, conn);
             return command2.ExecuteReader(CommandBehavior.CloseConnection).ToEnumerable<T>();
         }
 
@@ -83,7 +75,7 @@ namespace ChoETL
             if (File.Exists(sqliteSettings.GetDatabaseFilePath()))
                 File.Delete(sqliteSettings.GetDatabaseFilePath());
 
-            SQLiteConnection.CreateFile(sqliteSettings.GetDatabaseFilePath());
+            //SqliteConnection.Create(sqliteSettings.GetDatabaseFilePath());
 
             bool isFirstItem = true;
             bool isFirstBatch = true;
@@ -93,13 +85,13 @@ namespace ChoETL
             sqliteSettings.WriteLog($"Opening connection to `{sqliteSettings.GetConnectionString()}`...");
             sqliteSettings.WriteLog($"Starting import...");
             //Open sqlite connection, store the data
-            var conn = new SQLiteConnection(sqliteSettings.GetConnectionString());
-            SQLiteCommand insertCmd = null;
+            var conn = new SqliteConnection(sqliteSettings.GetConnectionString());
+            SqliteCommand insertCmd = null;
             try
             {
                 conn.Open();
 
-                SQLiteTransaction trans = sqliteSettings.TurnOnTransaction ? conn.BeginTransaction() : null;
+                SqliteTransaction trans = sqliteSettings.TurnOnTransaction ? conn.BeginTransaction() : null;
                 try
                 {
                     int index = 0;
@@ -116,7 +108,7 @@ namespace ChoETL
                                     isFirstBatch = false;
                                     try
                                     {
-                                        SQLiteCommand command = new SQLiteCommand(item.CreateTableScript(sqliteSettings.DBColumnDataTypeMapper, sqliteSettings.TableName), conn);
+                                        SqliteCommand command = new SqliteCommand(item.CreateTableScript(sqliteSettings.DBColumnDataTypeMapper, sqliteSettings.TableName), conn);
                                         command.ExecuteNonQuery();
                                     }
                                     catch { }
@@ -124,7 +116,7 @@ namespace ChoETL
                                     //Truncate table
                                     try
                                     {
-                                        SQLiteCommand command = new SQLiteCommand("DELETE FROM [{0}]".FormatString(sqliteSettings.TableName), conn, trans);
+                                        SqliteCommand command = new SqliteCommand("DELETE FROM [{0}]".FormatString(sqliteSettings.TableName), conn, trans);
                                         command.ExecuteNonQuery();
                                     }
                                     catch { }
@@ -162,7 +154,7 @@ namespace ChoETL
                             isFirstItem = true;
                             conn.Close();
                             conn = null;
-                            conn = new SQLiteConnection(sqliteSettings.GetConnectionString());
+                            conn = new SqliteConnection(sqliteSettings.GetConnectionString());
                             conn.Open();
                             trans = sqliteSettings.TurnOnTransaction ? conn.BeginTransaction() : null;
                         }
@@ -197,13 +189,13 @@ namespace ChoETL
                     insertCmd.Dispose();
                 if (conn != null)
                     conn.Close();
-                System.Data.SQLite.SQLiteConnection.ClearAllPools();
+                SqliteConnection.ClearAllPools();
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
             }
         }
 
-        private static SQLiteCommand CreateInsertCommand(object target, string tableName, SQLiteConnection conn, SQLiteTransaction trans, Dictionary<string, PropertyInfo> PIDict)
+        private static SqliteCommand CreateInsertCommand(object target, string tableName, SqliteConnection conn, SqliteTransaction trans, Dictionary<string, PropertyInfo> PIDict)
         {
             Type objectType = target is Type ? target as Type : target.GetType();
             StringBuilder script = new StringBuilder();
@@ -241,7 +233,7 @@ namespace ChoETL
                         script.AppendFormat(", @{0}", kvp.Key);
                 }
                 script.AppendLine(")");
-                SQLiteCommand command2 = trans == null ? new SQLiteCommand(script.ToString(), conn) : new SQLiteCommand(script.ToString(), conn);
+                SqliteCommand command2 = trans == null ? new SqliteCommand(script.ToString(), conn) : new SqliteCommand(script.ToString(), conn);
 
                 foreach (KeyValuePair<string, object> kvp in eo)
                 {
@@ -282,7 +274,7 @@ namespace ChoETL
                         script.AppendFormat(", @{0}", pd.Name);
                 }
                 script.AppendLine(")");
-                SQLiteCommand command2 = trans == null ? new SQLiteCommand(script.ToString(), conn) : new SQLiteCommand(script.ToString(), conn);
+                SqliteCommand command2 = trans == null ? new SqliteCommand(script.ToString(), conn) : new SqliteCommand(script.ToString(), conn);
                 foreach (PropertyDescriptor pd in ChoTypeDescriptor.GetProperties(objectType))
                 {
                     pv = PIDict[pd.Name].GetValue(target);
@@ -293,7 +285,7 @@ namespace ChoETL
             }
         }
 
-        private static void PopulateParams(SQLiteCommand cmd, object target, Dictionary<string, PropertyInfo> PIDict)
+        private static void PopulateParams(SqliteCommand cmd, object target, Dictionary<string, PropertyInfo> PIDict)
         {
             if (target.GetType().IsDynamicType())
             {

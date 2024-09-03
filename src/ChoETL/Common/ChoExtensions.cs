@@ -153,7 +153,7 @@ namespace ChoETL
             return Split(text, value, ChoStringSplitOptions.All);
         }
 
-        //#if !NETSTANDARD2_0
+        //#if !NET7_0_OR_GREATER
         //        /// <summary>
         //        /// Split the string into multiple strings by the Separators.
         //        /// </summary>
