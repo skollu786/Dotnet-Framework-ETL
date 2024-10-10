@@ -1,4 +1,4 @@
-﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
@@ -29,32 +29,19 @@ public class SqliteConversionGenerator : ISourceGenerator
             {
                 var methodSyntax = (MethodDeclarationSyntax)method;
 
-                if (methodSyntax.Identifier.ToString() == "Create")
+                if (methodSyntax.Identifier.ToString() == "CreateFile")
                 {
 
                     // Example conversion logic
-                    var newMethod = methodSyntax
-                        .WithIdentifier(SyntaxFactory.Identifier("Create"))
-                        .WithBody(SyntaxFactory.Block(
-                            SyntaxFactory.SingletonList<StatementSyntax>(
-                                SyntaxFactory.ExpressionStatement(
-                                    SyntaxFactory.ParseExpression(
-                                        "var connection = new Microsoft.Data.Sqlite.SqliteConnection(connectionString)"
-                                    )
-                                )
-                            )
-                        ));
-
-                    var newMethodCode = $@"
-        using System;
-        
-        namespace GeneratedCodeNameSpace
-        {{
-            public partial class GeneratedCodeClass
-            {{
-                {newMethod.ToFullString()}
-            }}
-        }}";
+                   var newMethodCode = $@"
+namespace ChoETL
+{{
+    partial class GeneratedCreateFile
+    {{       
+        public virtual void CreateFile(string filePath)
+            => CreateFile(filePath);
+    }}
+}}";
 
                     context.AddSource($"{methodSyntax.Identifier}.g.cs", newMethodCode);
                     break;
@@ -78,3 +65,5 @@ internal class SqliteSyntaxReceiver : ISyntaxReceiver
         }
     }
 }
+
+

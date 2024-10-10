@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Common;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -75,7 +76,7 @@ namespace ChoETL
             if (File.Exists(sqliteSettings.GetDatabaseFilePath()))
                 File.Delete(sqliteSettings.GetDatabaseFilePath());
 
-            //SqliteConnection.Create(sqliteSettings.GetDatabaseFilePath());
+            CreateFile(sqliteSettings.GetDatabaseFilePath());
 
             bool isFirstItem = true;
             bool isFirstBatch = true;
@@ -193,6 +194,11 @@ namespace ChoETL
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
             }
+        }
+
+        public static void CreateFile(string filePath)
+        {
+            SqliteConnection.CreateFile(filePath);
         }
 
         private static SqliteCommand CreateInsertCommand(object target, string tableName, SqliteConnection conn, SqliteTransaction trans, Dictionary<string, PropertyInfo> PIDict)
