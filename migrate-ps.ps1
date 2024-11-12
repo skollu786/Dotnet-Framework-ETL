@@ -1,5 +1,5 @@
 # Define the path to the folder where you want to search for .csproj files
-$folderPath = "C:\Personal\Projects\ChoETL-master-old"
+$folderPath = "C:\Personal\Projects\demo\ChoETL-master-old-tests"
 
 # Get all .csproj files in the specified folder and its subfolders
 $csprojFiles = Get-ChildItem -Path $folderPath -Recurse -Filter *.csproj
@@ -105,8 +105,12 @@ foreach ($csprojFile in $csprojFiles) {
     }
     # Save the updated content back to the .csproj file
     $content = $content -replace "<UseWPF>true</UseWPF>", "<UseWPF>false</UseWPF>"
+    
     $content = $content -replace "<TargetFramework>net7.0-windows</TargetFramework>", "<TargetFramework>net7.0</TargetFramework>"
     $content = $content -replace "<TargetFramework>net7.0</TargetFramework>", "<TargetFramework>net7.0</TargetFramework>`r`n<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>`r`n<EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>`r`n<AllowUnsafeBlocks>true</AllowUnsafeBlocks>"
+if ($csprojFile.FullName.Contains("Tests")){
+$content = $content -replace "<TargetFramework>net7.0</TargetFramework>", "<TargetFramework>net7.0</TargetFramework>`r`n<IsTestProject>true</IsTestProject>"
+}
     Set-Content -Path $csprojFile.FullName -Value $content
     Write-Output "Successfully updated packages: $($csprojFile.FullName) with content $($content)"    
     }
@@ -267,6 +271,12 @@ Write-Output "All Namespaces are updated."
 foreach ($csprojFile in $csprojFiles) {
     dotnet add $csprojFile.FullName package  "Microsoft.Data.SqlClient" --version "5.2.2"
     dotnet add $csprojFile.FullName package  "System.CodeDom" --version "8.0.0"
+if ($csprojFile.FullName.Contains("Tests")){
+dotnet add $csprojFile.FullName package  "Microsoft.NET.Test.Sdk" --version "17.11.1"
+dotnet add $csprojFile.FullName package  "MSTest.TestAdapter" --version "3.6.2"
+dotnet add $csprojFile.FullName package  "MSTest.TestFramework" --version "3.6.2"
+
+}
 $content = Get-Content -Path $csprojFile.FullName -Raw
 $outdatedPackages = dotnet list $csprojFile.FullName package --outdated
 
