@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-#if !NETSTANDARD2_0
+#if !NET7_0_OR_GREATER
 using System.Windows.Data;
 #endif
 
 namespace ChoETL
 {
     [ChoTypeConverter(typeof(Char))]
-#if !NETSTANDARD2_0
+#if !NET7_0_OR_GREATER
     public class ChoCharConverter : IValueConverter
 #else
     public class ChoCharConverter : IChoValueConverter
